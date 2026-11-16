@@ -7,12 +7,14 @@ MIRROR=${MIRROR:-https://geo.mirror.pkgbuild.com}
 IMAGE_SIZE=${IMAGE_SIZE:-12G}
 OUT=${OUT:-$REPO/release}
 TARGET=$WORK/target
+BS=
 
 step() { echo; echo "===== $* ====="; }
 
 cleanup() {
   mountpoint -q "$WORK/mnt/boot" 2>/dev/null && umount "$WORK/mnt/boot" || true
   mountpoint -q "$WORK/mnt" 2>/dev/null && umount "$WORK/mnt" || true
+  if [ -n "$BS" ]; then mountpoint -q "$BS$WORK" 2>/dev/null && umount "$BS$WORK" || true; fi
   if [ -n "${LOOP:-}" ]; then losetup -d "$LOOP" 2>/dev/null || true; fi
 }
 trap cleanup EXIT
@@ -20,6 +22,7 @@ trap cleanup EXIT
 step "workspace $WORK"
 rm -rf "$WORK"
 mkdir -p "$WORK/bs" "$OUT"
+df -h "$WORK"
 
 step "download arch bootstrap"
 curl -fL --retry 3 --retry-delay 5 -o "$WORK/bootstrap.tar.zst" \
@@ -28,6 +31,10 @@ tar -I zstd -xf "$WORK/bootstrap.tar.zst" -C "$WORK/bs"
 BS=$WORK/bs/root.x86_64
 cp /etc/resolv.conf "$BS/etc/resolv.conf"
 printf 'Server = %s/$repo/os/$arch\n' "$MIRROR" > "$BS/etc/pacman.d/mirrorlist"
+
+step "expose workspace inside the bootstrap"
+mkdir -p "$BS$WORK"
+mount --bind "$WORK" "$BS$WORK"
 
 step "stage build inputs"
 cp "$REPO/build/chroot.sh" "$BS/chroot.sh"
