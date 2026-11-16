@@ -5,8 +5,9 @@ QCOW2=$(ls release/*.qcow2 2>/dev/null | head -n1 || true)
 if [ -z "$QCOW2" ]; then echo "::error::no qcow2 in release/"; exit 1; fi
 echo "image: $QCOW2"
 
-CODE=$(find /usr/share -iname 'OVMF*CODE*.fd' 2>/dev/null | head -n1 || true)
-VARS_T=$(find /usr/share -iname 'OVMF*VARS*.fd' 2>/dev/null | head -n1 || true)
+# plain UEFI firmware: the .ms (secure boot) build rejects our unsigned grub
+CODE=$(find /usr/share -iname 'OVMF*CODE*.fd' ! -iname '*.ms.fd' ! -iname '*secboot*' 2>/dev/null | head -n1 || true)
+VARS_T=$(find /usr/share -iname 'OVMF*VARS*.fd' ! -iname '*.ms.fd' ! -iname '*secboot*' 2>/dev/null | head -n1 || true)
 if [ -z "$CODE" ] || [ -z "$VARS_T" ]; then echo "::error::OVMF firmware not found"; exit 1; fi
 echo "firmware: $CODE"
 echo "vars: $VARS_T"
