@@ -10,6 +10,7 @@ pacman-key --populate archlinux
 pacman -Sy --noconfirm --needed archlinux-keyring
 
 step "pacstrap $TARGET"
+mkdir -p "$TARGET"
 pacstrap -K "$TARGET" \
   base linux grub efibootmgr sudo nano git networkmanager openssh \
   hyprland xdg-desktop-portal-hyprland hyprpolkitagent \
