@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-QCOW2=$(ls release/*.qcow2 | head -n1)
+QCOW2=$(ls release/*.qcow2 2>/dev/null | head -n1 || true)
+if [ -z "$QCOW2" ]; then echo "::error::no qcow2 in release/"; exit 1; fi
+echo "image: $QCOW2"
+
+CODE=$(find /usr/share -iname 'OVMF*CODE*.fd' 2>/dev/null | head -n1 || true)
+VARS_T=$(find /usr/share -iname 'OVMF*VARS*.fd' 2>/dev/null | head -n1 || true)
+if [ -z "$CODE" ] || [ -z "$VARS_T" ]; then echo "::error::OVMF firmware not found"; exit 1; fi
+echo "firmware: $CODE"
+echo "vars: $VARS_T"
+
 LOG=$(mktemp)
 VARS=$(mktemp)
-
-CODE=$(ls /usr/share/OVMF/OVMF_CODE_4M.fd /usr/share/OVMF/OVMF_CODE.fd /usr/share/edk2/x64/OVMF_CODE.4m.fd 2>/dev/null | head -n1)
-VARS_T=$(ls /usr/share/OVMF/OVMF_VARS_4M.fd /usr/share/OVMF/OVMF_VARS.fd /usr/share/edk2/x64/OVMF_VARS.4m.fd 2>/dev/null | head -n1)
-echo "firmware: $CODE"
 cp "$VARS_T" "$VARS"
 
 qemu-system-x86_64 \
@@ -25,7 +30,7 @@ for i in $(seq 1 84); do
     echo "boot OK after $((i * 5))s"
     kill $PID 2>/dev/null || true
     wait $PID 2>/dev/null || true
-    tail -n 20 "$LOG"
+    tail -n 25 "$LOG"
     exit 0
   fi
   if ! kill -0 $PID 2>/dev/null; then
