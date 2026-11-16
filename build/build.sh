@@ -72,10 +72,8 @@ UUID=$UUID_ESP /boot vfat rw,relatime,fmask=0022,dmask=0022,codepage=437,iochars
 EOF
 
 step "install bootloader"
-for d in dev proc sys run; do mount --rbind "/$d" "$WORK/mnt/$d"; done
 "$BS/usr/bin/arch-chroot" "$WORK/mnt" grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=naseem --removable --no-nvram
 "$BS/usr/bin/arch-chroot" "$WORK/mnt" grub-mkconfig -o /boot/grub/grub.cfg
-for d in dev proc sys run; do umount -Rl "$WORK/mnt/$d" || true; done
 umount "$WORK/mnt/boot"
 umount "$WORK/mnt"
 losetup -d "$LOOP"
