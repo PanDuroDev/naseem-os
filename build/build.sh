@@ -55,8 +55,9 @@ parted -s "$IMG" mkpart root ext4 513MiB 100%
 LOOP=$(losetup -fP --show "$IMG")
 mkfs.vfat -F32 -n ESP "${LOOP}p1" >/dev/null
 mkfs.ext4 -q -F -L naseem "${LOOP}p2"
-mkdir -p "$WORK/mnt/boot"
+mkdir -p "$WORK/mnt"
 mount "${LOOP}p2" "$WORK/mnt"
+mkdir -p "$WORK/mnt/boot"
 mount "${LOOP}p1" "$WORK/mnt/boot"
 
 step "copy rootfs onto image"
