@@ -14,7 +14,7 @@ mkdir -p "$TARGET"
 pacstrap -K "$TARGET" \
   base linux grub efibootmgr sudo nano git networkmanager openssh ca-certificates \
   hyprland xdg-desktop-portal-hyprland hyprpolkitagent \
-  waybar fuzzel kitty swaybg nwg-dock-hyprland nwg-look \
+  waybar fuzzel kitty swaybg nwg-dock-hyprland nwg-look nwg-drawer \
   mesa xorg-xwayland qt5-wayland qt6-wayland \
   pipewire pipewire-pulse wireplumber \
   polkit noto-fonts noto-fonts-emoji ttf-dejavu inter-font ttf-jetbrains-mono \
