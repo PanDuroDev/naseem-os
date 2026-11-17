@@ -1,0 +1,15 @@
+Naseem - keybinds
+
+Super + Return        terminal
+Super + Space         search apps / run command
+Super + A             app grid
+Super + I             install an app
+Super + /             this list
+Super + Q             close window
+Super + F             fullscreen
+Super + 1..5          switch workspace
+Super + Shift + 1..5  move window to workspace
+Super + wheel         switch workspace
+Super + drag          move window
+Super + right drag    resize window
+Super + Shift + E     exit Hyprland (back to text console)
