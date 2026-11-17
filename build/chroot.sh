@@ -24,5 +24,7 @@ step "configure target"
 mkdir -p "$TARGET/root"
 cp /setup.sh "$TARGET/root/setup.sh"
 cp -a /config "$TARGET/config"
+mount --bind "$TARGET" "$TARGET"
 arch-chroot "$TARGET" /bin/bash /root/setup.sh
+umount "$TARGET" || true
 rm -rf "$TARGET/config" "$TARGET/root/setup.sh"
