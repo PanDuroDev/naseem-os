@@ -51,9 +51,7 @@ step "macOS theme"
 sudo -u nasim env HOME=/home/nasim git clone --depth 1 https://github.com/vinceliuice/WhiteSur-gtk-theme /tmp/ws-gtk
 sudo -u nasim env HOME=/home/nasim git clone --depth 1 https://github.com/vinceliuice/WhiteSur-icon-theme /tmp/ws-icon
 sudo -u nasim env HOME=/home/nasim git clone --depth 1 https://github.com/vinceliuice/WhiteSur-cursors /tmp/ws-cur
-sudo -u nasim env HOME=/home/nasim bash -c 'cd /tmp/ws-gtk && ./install.sh -d /home/nasim/.themes -c dark -t blue --silent-mode' </dev/null \
-  || sudo -u nasim env HOME=/home/nasim bash -c 'cd /tmp/ws-gtk && ./install.sh -d /home/nasim/.themes -c dark -t blue' </dev/null \
-  || echo 'WARN: WhiteSur gtk theme install failed'
+env HOME=/home/nasim bash -c 'cd /tmp/ws-gtk && ./install.sh -d /home/nasim/.themes -c dark -t blue --silent-mode' </dev/null 2>&1 | tail -n 40 || true
 ls -d /home/nasim/.themes/WhiteSur-Dark >/dev/null 2>&1 && echo 'THEME_OK' || echo 'THEME_MISSING'
 sudo -u nasim env HOME=/home/nasim bash -c 'cd /tmp/ws-icon && ./install.sh -d /home/nasim/.icons -t default' </dev/null \
   || echo 'WARN: WhiteSur icon theme install failed'
