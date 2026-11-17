@@ -60,10 +60,11 @@ test -d /home/nasim/.icons/WhiteSur || echo 'MISSING .icons/WhiteSur'
 test -d /home/nasim/.icons/WhiteSur-cursors || echo 'MISSING .icons/WhiteSur-cursors'
 step "AUR helper"
 rm -rf /tmp/yayd
-YAY_TGZ=$(curl -fsSL https://api.github.com/repos/jguer/yay/releases/latest | grep -o 'https://[^"]*yay_[^"]*_x86_64\.tar\.gz' | head -n1)
+curl -fsSL -o /tmp/yay.tgz https://github.com/jguer/yay/releases/download/v13.1.0/yay_13.1.0_x86_64.tar.gz || true
 mkdir -p /tmp/yayd
-if [ -n "$YAY_TGZ" ] && curl -fsSL -o /tmp/yay.tgz "$YAY_TGZ" && tar -xzf /tmp/yay.tgz -C /tmp/yayd; then
-  install -Dm755 "$(find /tmp/yayd -name yay -type f | head -n1)" /usr/bin/yay
+if tar -xzf /tmp/yay.tgz -C /tmp/yayd 2>/dev/null; then
+  YAY_BIN=$(find /tmp/yayd -name yay -type f | head -n1 || true)
+  if [ -n "$YAY_BIN" ]; then install -Dm755 "$YAY_BIN" /usr/bin/yay; else echo 'WARN: yay binary not found'; fi
 else
   echo 'WARN: yay download failed'
 fi
