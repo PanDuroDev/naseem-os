@@ -46,4 +46,4 @@ case "$backend" in
   flatpak) cmd="flatpak install -y --noninteractive flathub $pkg" ;;
   *) echo "unknown backend: $backend"; exit 1 ;;
 esac
-exec kitty --title "Install: $choice" -e bash -c "$cmd; echo; read -rp 'Done. Press Enter to close.'"
+exec foot --title="Install: $choice" bash -c "$cmd; echo; read -rp 'Done. Press Enter to close.'"
