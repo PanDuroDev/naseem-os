@@ -51,17 +51,17 @@ hl.animation({ leaf = "layers",     enabled = true, speed = 3,   bezier = "nasee
 hl.on("hyprland.start", function()
     hl.exec_cmd("swaybg -i /home/nasim/Pictures/wallpaper.png -m fill")
     hl.exec_cmd("waybar")
-    hl.exec_cmd("nwg-dock-hyprland -i 44 -d -p bottom -mb 8")
+    hl.exec_cmd("nwg-dock-hyprland -i 44 -p bottom -mb 8")
 end)
 
 local mod = "SUPER"
 
-hl.bind(mod .. " + RETURN", hl.dsp.exec_cmd("kitty"))
+hl.bind(mod .. " + RETURN", hl.dsp.exec_cmd("foot"))
 hl.bind(mod .. " + SPACE",  hl.dsp.exec_cmd("fuzzel"))
 hl.bind(mod .. " + Q",      hl.dsp.window.close())
 hl.bind(mod .. " + A",      hl.dsp.exec_cmd("nwg-drawer -wm hyprland -c 6 -is 56 -mt 60 -mb 60 -ml 60 -mr 60"))
 hl.bind(mod .. " + I",      hl.dsp.exec_cmd("naseem-install"))
-hl.bind(mod .. " + SLASH",  hl.dsp.exec_cmd("kitty --title Keybinds -e less /home/nasim/.config/naseem/keybinds.txt"))
+hl.bind(mod .. " + SLASH",  hl.dsp.exec_cmd("foot --title=Keybinds less /home/nasim/.config/naseem/keybinds.txt"))
 hl.bind(mod .. " + F",      hl.dsp.exec_cmd("hyprctl dispatch fullscreen 0"))
 hl.bind(mod .. " + SHIFT + E", hl.dsp.exec_cmd("hyprctl dispatch exit"))
 
