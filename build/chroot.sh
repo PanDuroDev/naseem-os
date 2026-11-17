@@ -18,7 +18,7 @@ pacstrap -K "$TARGET" \
   mesa xorg-xwayland qt5-wayland qt6-wayland \
   pipewire pipewire-pulse wireplumber \
   polkit noto-fonts noto-fonts-emoji ttf-dejavu inter-font ttf-jetbrains-mono \
-  sassc flatpak
+  sassc libxml2 imagemagick flatpak
 
 step "configure target"
 mkdir -p "$TARGET/root"
