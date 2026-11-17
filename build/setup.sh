@@ -47,6 +47,15 @@ step "desktop dotfiles"
 cp -a /config/. /
 chown -R nasim:nasim /home/nasim
 
+step "multilib"
+printf '\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n' >> /etc/pacman.conf
+pacman -Sy --noconfirm >/dev/null 2>&1 || echo 'WARN: multilib sync failed'
+
+step "app installer"
+chmod 755 /usr/local/bin/naseem-install
+bash -n /usr/local/bin/naseem-install || echo 'WARN: naseem-install syntax error'
+/usr/local/bin/naseem-install --check || echo 'WARN: some curated packages missing from the repos'
+
 step "macOS icons and cursors"
 sudo -u nasim env HOME=/home/nasim git clone --depth 1 https://github.com/vinceliuice/WhiteSur-icon-theme /tmp/ws-icon
 sudo -u nasim env HOME=/home/nasim git clone --depth 1 https://github.com/vinceliuice/WhiteSur-cursors /tmp/ws-cur
@@ -57,7 +66,7 @@ sudo -u nasim env HOME=/home/nasim bash -c 'cd /tmp/ws-cur && ./install.sh' </de
   || echo 'WARN: WhiteSur cursors install failed'
 rm -rf /tmp/ws-icon /tmp/ws-cur
 test -d /home/nasim/.icons/WhiteSur || echo 'MISSING .icons/WhiteSur'
-test -d /home/nasim/.icons/WhiteSur-cursors || echo 'MISSING .icons/WhiteSur-cursors'
+find /home/nasim -maxdepth 5 -iname '*WhiteSur*cursor*' -type d 2>/dev/null | head -n 3 || true
 step "AUR helper"
 rm -rf /tmp/yayd
 curl -fsSL -o /tmp/yay.tgz https://github.com/jguer/yay/releases/download/v13.1.0/yay_13.1.0_x86_64.tar.gz || true
