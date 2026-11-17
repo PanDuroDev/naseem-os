@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Curated app installer: fuzzel menu -> pacman / yay / flatpak.
+set -uo pipefail
+
+APPS='Firefox|pacman|firefox
+Chromium|pacman|chromium
+Thunderbird|pacman|thunderbird
+VLC player|pacman|vlc
+mpv player|pacman|mpv
+GIMP|pacman|gimp
+Inkscape|pacman|inkscape
+Blender|pacman|blender
+LibreOffice|pacman|libreoffice-fresh
+VS Code|pacman|code
+Neovim|pacman|neovim
+Docker|pacman|docker
+Steam|pacman|steam
+Telegram|pacman|telegram-desktop
+Transmission|pacman|transmission-gtk
+File manager|pacman|nautilus
+Discord|flatpak|com.discordapp.Discord
+Spotify|flatpak|com.spotify.Client
+Signal|flatpak|org.signal.Signal
+Zoom|flatpak|us.zoom.Zoom
+Obsidian|flatpak|md.obsidian.Obsidian'
+
+if [ "${1:-}" = "--check" ]; then
+  bad=0
+  while IFS='|' read -r name backend pkg; do
+    [ -z "$name" ] && continue
+    if [ "$backend" = pacman ] && ! pacman -Si "$pkg" >/dev/null 2>&1; then
+      echo "MISSING repo: $pkg"; bad=1
+    fi
+  done <<<"$APPS"
+  exit $bad
+fi
+
+choice=$(printf '%s\n' "$APPS" | cut -d'|' -f1 | fuzzel --dmenu -p 'Install: ' -w 40) || exit 0
+[ -z "$choice" ] && exit 0
+line=$(printf '%s\n' "$APPS" | awk -F'|' -v n="$choice" '$1==n')
+backend=$(printf '%s' "$line" | cut -d'|' -f2)
+pkg=$(printf '%s' "$line" | cut -d'|' -f3)
+case "$backend" in
+  pacman)  cmd="sudo pacman -S --needed --noconfirm $pkg" ;;
+  yay)     cmd="yay -S --needed --noconfirm $pkg" ;;
+  flatpak) cmd="flatpak install -y --noninteractive flathub $pkg" ;;
+  *) echo "unknown backend: $backend"; exit 1 ;;
+esac
+exec kitty --title "Install: $choice" -e bash -c "$cmd; echo; read -rp 'Done. Press Enter to close.'"
