@@ -50,12 +50,14 @@ chown -R nasim:nasim /home/nasim
 step "macOS icons and cursors"
 sudo -u nasim env HOME=/home/nasim git clone --depth 1 https://github.com/vinceliuice/WhiteSur-icon-theme /tmp/ws-icon
 sudo -u nasim env HOME=/home/nasim git clone --depth 1 https://github.com/vinceliuice/WhiteSur-cursors /tmp/ws-cur
-ls -d /home/nasim/.icons/WhiteSur >/dev/null 2>&1 && echo 'ICONS_OK' || echo 'ICONS_MISSING'
+
 sudo -u nasim env HOME=/home/nasim bash -c 'cd /tmp/ws-icon && ./install.sh -d /home/nasim/.icons -t default' </dev/null \
   || echo 'WARN: WhiteSur icon theme install failed'
 sudo -u nasim env HOME=/home/nasim bash -c 'cd /tmp/ws-cur && ./install.sh' </dev/null \
   || echo 'WARN: WhiteSur cursors install failed'
 rm -rf /tmp/ws-icon /tmp/ws-cur
+test -d /home/nasim/.icons/WhiteSur || echo 'MISSING .icons/WhiteSur'
+test -d /home/nasim/.icons/WhiteSur-cursors || echo 'MISSING .icons/WhiteSur-cursors'
 chown -R nasim:nasim /home/nasim
 
 step "grub defaults"
