@@ -1,5 +1,8 @@
-# Naseem: start the desktop on the first virtual terminal when a DRM device exists.
-# Without one (headless CI) the shell simply stays available.
+# start the desktop on the first virtual console
 if [ "$(tty)" = "/dev/tty1" ] && [ -e /dev/dri/card0 ]; then
-  exec Hyprland
+  if command -v start-hyprland >/dev/null 2>&1; then
+    exec start-hyprland
+  else
+    exec Hyprland
+  fi
 fi
