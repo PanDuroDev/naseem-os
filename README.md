@@ -5,7 +5,8 @@ Nothing is built on a local machine: GitHub Actions builds, smoke-tests and publ
 
 ## Status
 
-`v0.0.1` - bootable base: Arch Linux, UEFI/GRUB, autologin on tty1, Hyprland + Waybar.
+`v0.0.2` - bootable base plus the macOS look: WhiteSur theme, Inter font, translucency,
+rounded corners, top bar and dock.
 
 ## Download
 
@@ -31,10 +32,12 @@ Change it after first boot with `passwd`.
 ## What works
 
 - Hyprland starts automatically on tty1 when a DRM device exists.
+- Top bar (Waybar) with workspaces, clock, tray, network, volume, battery.
+- Bottom dock (nwg-dock-hyprland), wallpaper, rounded corners, blur, shadows.
+- WhiteSur GTK theme, WhiteSur icons and cursors, Inter UI font, JetBrains Mono terminal font.
 - `Super+Return` terminal (kitty), `Super+Space` launcher (fuzzel), `Super+Q` close, `Super+Shift+Q` exit.
-- Rounded corners, blur, shadows and translucent top bar - the macOS feel.
 - NetworkManager, PipeWire, Flatpak + Flathub wired up.
-- `pacman -S <pkg>` for anything else. AUR helper comes later.
+- `pacman -S <pkg>` for anything else. `nwg-look` changes GTK theme from the GUI.
 
 ## Build
 
@@ -45,12 +48,18 @@ gh workflow run build.yml
 gh run watch
 ```
 
-Tag `v*` to publish the images to a GitHub Release.
+Push a `v*` tag to publish the images to a GitHub Release:
+
+```
+gh release create v0.0.2 --notes "..." --target main
+```
 
 ## Roadmap
 
 - [x] bootable Arch + Hyprland image in CI
-- [ ] WhiteSur GTK/icon theme, macOS cursors and fonts
-- [ ] dock, macOS top bar layout, window traffic lights
+- [x] WhiteSur GTK/icon theme, macOS cursors and fonts
+- [x] dock, wallpaper, translucent top bar
+- [ ] window traffic lights on hover, macOS window controls
+- [ ] AUR helper, one-click app install menu
 - [ ] Omarchy package layer (install/update menu, defaults)
-- [ ] AUR helper, ISO output
+- [ ] ISO output
