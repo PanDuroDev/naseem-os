@@ -63,7 +63,7 @@ Press `Super+/` inside the VM for the full list. The essentials:
 - Top bar (Waybar) with workspaces, clock, tray, network, volume, battery.
 - Bottom dock (nwg-dock-hyprland), wallpaper, rounded corners, blur, shadows.
 - App grid / Launchpad (nwg-drawer) on `Super+A`, app installer on `Super+I`.
-- WhiteSur icons, Inter UI font, JetBrains Mono terminal font.
+- WhiteSur icons and macOS cursors, Inter UI font, JetBrains Mono terminal font.
 - NetworkManager, PipeWire, Flatpak + Flathub, multilib repo enabled.
 - `pacman`, `yay`, `flatpak` all ready; `nwg-look` for GTK theme settings.
 
@@ -97,7 +97,6 @@ gh api -X POST repos/PanDuroDev/naseem-os/git/refs -f ref=refs/tags/v0.0.6 -f sh
 - [x] AUR helper (`yay`), multilib
 - [x] one-click app install menu (`Super+I`)
 - [x] keybind cheatsheet (`Super+/`)
-- [ ] macOS cursors (upstream installer produces nothing headless)
 - [ ] WhiteSur GTK theme (its installer forces a full system upgrade; needs a prebuilt theme)
 - [ ] window traffic lights, macOS window controls
 - [ ] Omarchy package layer (install/update menu, defaults)
