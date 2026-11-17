@@ -59,11 +59,16 @@ rm -rf /tmp/ws-icon /tmp/ws-cur
 test -d /home/nasim/.icons/WhiteSur || echo 'MISSING .icons/WhiteSur'
 test -d /home/nasim/.icons/WhiteSur-cursors || echo 'MISSING .icons/WhiteSur-cursors'
 step "AUR helper"
-rm -rf /tmp/yay
-sudo -u nasim -H bash -lc 'git clone --depth 1 https://aur.archlinux.org/yay.git /tmp/yay && cd /tmp/yay && makepkg -si --noconfirm' </dev/null \
-  || echo 'WARN: yay build failed'
-rm -rf /tmp/yay
-sudo -u nasim -H bash -lc 'command -v yay || echo MISSING yay'
+rm -rf /tmp/yayd
+YAY_TGZ=$(curl -fsSL https://api.github.com/repos/jguer/yay/releases/latest | grep -o 'https://[^"]*yay_[^"]*_x86_64\.tar\.gz' | head -n1)
+mkdir -p /tmp/yayd
+if [ -n "$YAY_TGZ" ] && curl -fsSL -o /tmp/yay.tgz "$YAY_TGZ" && tar -xzf /tmp/yay.tgz -C /tmp/yayd; then
+  install -Dm755 "$(find /tmp/yayd -name yay -type f | head -n1)" /usr/bin/yay
+else
+  echo 'WARN: yay download failed'
+fi
+rm -rf /tmp/yayd /tmp/yay.tgz
+command -v yay || echo 'MISSING yay'
 chown -R nasim:nasim /home/nasim
 
 step "grub defaults"
