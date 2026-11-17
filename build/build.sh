@@ -36,6 +36,10 @@ step "expose workspace inside the bootstrap"
 mkdir -p "$BS$WORK"
 mount --bind "$WORK" "$BS$WORK"
 
+step "wallpaper"
+mkdir -p "$REPO/config/home/nasim/Pictures"
+convert -size 2560x1600 gradient:'#22304d-#5c3d6b' "$REPO/config/home/nasim/Pictures/wallpaper.png"
+
 step "stage build inputs"
 cp "$REPO/build/chroot.sh" "$BS/chroot.sh"
 cp "$REPO/build/setup.sh" "$BS/setup.sh"
