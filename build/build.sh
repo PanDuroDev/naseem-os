@@ -88,8 +88,10 @@ LOOP=
 step "convert images"
 qemu-img convert -f raw -O qcow2 -c "$IMG" "$OUT/naseem.qcow2"
 qemu-img convert -f raw -O vmdk -o subformat=streamOptimized -c "$IMG" "$OUT/naseem.vmdk"
+qemu-img convert -f raw -O vdi "$IMG" "$OUT/naseem.vdi"
 rm -f "$IMG"
+xz -T0 -6 "$OUT/naseem.vdi"
 cd "$OUT"
 for f in "$OUT"/naseem.*; do [ "$(stat -c%s "$f")" -lt 2147483648 ] || { echo "ERROR: $f is over the 2 GiB GitHub release asset limit"; exit 1; }; done
-sha256sum naseem.qcow2 naseem.vmdk > SHA256SUMS
+sha256sum naseem.qcow2 naseem.vmdk naseem.vdi.xz > SHA256SUMS
 ls -lh "$OUT"
