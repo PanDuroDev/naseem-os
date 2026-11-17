@@ -62,8 +62,8 @@ hl.bind(mod .. " + Q",      hl.dsp.window.close())
 hl.bind(mod .. " + A",      hl.dsp.exec_cmd("nwg-drawer -wm hyprland -c 6 -is 56 -mt 60 -mb 60 -ml 60 -mr 60"))
 hl.bind(mod .. " + I",      hl.dsp.exec_cmd("naseem-install"))
 hl.bind(mod .. " + SLASH",  hl.dsp.exec_cmd("foot --title=Keybinds less /home/nasim/.config/naseem/keybinds.txt"))
-hl.bind(mod .. " + F",      hl.dsp.exec_cmd("hyprctl dispatch fullscreen 0"))
-hl.bind(mod .. " + SHIFT + E", hl.dsp.exec_cmd("hyprctl dispatch exit"))
+hl.bind(mod .. " + F",      hl.dsp.window.fullscreen())
+hl.bind(mod .. " + SHIFT + E", hl.dsp.exit())
 
 for i = 1, 5 do
     hl.bind(mod .. " + " .. i,         hl.dsp.focus({ workspace = i }))
