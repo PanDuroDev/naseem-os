@@ -47,17 +47,15 @@ step "desktop dotfiles"
 cp -a /config/. /
 chown -R nasim:nasim /home/nasim
 
-step "macOS theme"
-sudo -u nasim env HOME=/home/nasim git clone --depth 1 https://github.com/vinceliuice/WhiteSur-gtk-theme /tmp/ws-gtk
+step "macOS icons and cursors"
 sudo -u nasim env HOME=/home/nasim git clone --depth 1 https://github.com/vinceliuice/WhiteSur-icon-theme /tmp/ws-icon
 sudo -u nasim env HOME=/home/nasim git clone --depth 1 https://github.com/vinceliuice/WhiteSur-cursors /tmp/ws-cur
-env HOME=/home/nasim bash -c 'cd /tmp/ws-gtk && ./install.sh -d /home/nasim/.themes -c dark -t blue --silent-mode' </dev/null 2>&1 | tail -n 40 || true
-ls -d /home/nasim/.themes/WhiteSur-Dark >/dev/null 2>&1 && echo 'THEME_OK' || echo 'THEME_MISSING'
+ls -d /home/nasim/.icons/WhiteSur >/dev/null 2>&1 && echo 'ICONS_OK' || echo 'ICONS_MISSING'
 sudo -u nasim env HOME=/home/nasim bash -c 'cd /tmp/ws-icon && ./install.sh -d /home/nasim/.icons -t default' </dev/null \
   || echo 'WARN: WhiteSur icon theme install failed'
 sudo -u nasim env HOME=/home/nasim bash -c 'cd /tmp/ws-cur && ./install.sh' </dev/null \
   || echo 'WARN: WhiteSur cursors install failed'
-rm -rf /tmp/ws-gtk /tmp/ws-icon /tmp/ws-cur
+rm -rf /tmp/ws-icon /tmp/ws-cur
 chown -R nasim:nasim /home/nasim
 
 step "grub defaults"
