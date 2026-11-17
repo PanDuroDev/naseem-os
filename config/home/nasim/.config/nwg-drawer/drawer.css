@@ -1,0 +1,24 @@
+window {
+  background: rgba(28, 28, 30, 0.92);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f2f2f7;
+}
+
+button {
+  border-radius: 12px;
+  padding: 6px;
+  color: #f2f2f7;
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+entry {
+  border-radius: 10px;
+  margin: 12px;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f2f2f7;
+}
