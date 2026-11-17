@@ -1,30 +1,30 @@
-#!/usr/bin/envkbash
-setk-euokpipefail
+#!/usr/bin/env bash
+set -euo pipefail
 
-TARGET=${TARGET:?TARGETknotkset}
-step()k{kecho;kechok"=====k$*k=====";k}
+TARGET=${TARGET:?TARGET not set}
+step() { echo; echo "===== $* ====="; }
 
-stepk"keyring"
-pacman-keyk--init
-pacman-keyk--populatekarchlinux
-pacmank-Syk--noconfirmk--neededkarchlinux-keyring
+step "keyring"
+pacman-key --init
+pacman-key --populate archlinux
+pacman -Sy --noconfirm --needed archlinux-keyring
 
-stepk"pacstrapk$TARGET"
-mkdirk-pk"$TARGET"
-pacstrapk-Kk"$TARGET"k\
-kkbaseklinuxkgrubkefibootmgrksudoknanokgitknetworkmanagerkopensshkca-certificatesk\
-kkhyprlandkxdg-desktop-portal-hyprlandkhyprpolkitagentk\
-kkwaybarkfuzzelkkittykswaybgknwg-dock-hyprlandknwg-lookknwg-drawerk\
-kkmesakxorg-xwaylandkqt5-waylandkqt6-waylandk\
-kkpipewirekpipewire-pulsekwireplumberk\
-kkpolkitknoto-fontsknoto-fonts-emojikttf-dejavukinter-fontkttf-jetbrains-monok\
-kksasscklibxml2kimagemagickkflatpak
+step "pacstrap $TARGET"
+mkdir -p "$TARGET"
+pacstrap -K "$TARGET" \
+  base linux grub efibootmgr sudo nano git networkmanager openssh ca-certificates \
+  hyprland xdg-desktop-portal-hyprland hyprpolkitagent \
+  waybar fuzzel foot swaybg nwg-dock-hyprland nwg-look nwg-drawer \
+  mesa xorg-xwayland qt5-wayland qt6-wayland \
+  pipewire pipewire-pulse wireplumber \
+  polkit noto-fonts noto-fonts-emoji ttf-dejavu inter-font ttf-jetbrains-mono \
+  sassc libxml2 imagemagick flatpak
 
-stepk"configurektarget"
-mkdirk-pk"$TARGET/root"
-cpk/setup.shk"$TARGET/root/setup.sh"
-cpk-ak/configk"$TARGET/config"
-mountk--bindk"$TARGET"k"$TARGET"
-arch-chrootk"$TARGET"k/bin/bashk/root/setup.sh
-umountk"$TARGET"k||ktrue
-rmk-rfk"$TARGET/config"k"$TARGET/root/setup.sh"
+step "configure target"
+mkdir -p "$TARGET/root"
+cp /setup.sh "$TARGET/root/setup.sh"
+cp -a /config "$TARGET/config"
+mount --bind "$TARGET" "$TARGET"
+arch-chroot "$TARGET" /bin/bash /root/setup.sh
+umount "$TARGET" || true
+rm -rf "$TARGET/config" "$TARGET/root/setup.sh"
