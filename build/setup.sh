@@ -58,6 +58,12 @@ sudo -u nasim env HOME=/home/nasim bash -c 'cd /tmp/ws-cur && ./install.sh' </de
 rm -rf /tmp/ws-icon /tmp/ws-cur
 test -d /home/nasim/.icons/WhiteSur || echo 'MISSING .icons/WhiteSur'
 test -d /home/nasim/.icons/WhiteSur-cursors || echo 'MISSING .icons/WhiteSur-cursors'
+step "AUR helper"
+rm -rf /tmp/yay
+sudo -u nasim -H bash -lc 'git clone --depth 1 https://aur.archlinux.org/yay.git /tmp/yay && cd /tmp/yay && makepkg -si --noconfirm' </dev/null \
+  || echo 'WARN: yay build failed'
+rm -rf /tmp/yay
+sudo -u nasim -H bash -lc 'command -v yay || echo MISSING yay'
 chown -R nasim:nasim /home/nasim
 
 step "grub defaults"
