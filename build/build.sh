@@ -65,6 +65,8 @@ mkdir -p "$WORK/mnt/boot"
 mount "${LOOP}p1" "$WORK/mnt/boot"
 
 step "copy rootfs onto image"
+step "trim pacman cache"
+rm -rf "$TARGET"/var/cache/pacman/pkg/* "$TARGET"/var/lib/pacman/sync/* "$TARGET"/tmp/* 2>/dev/null || true
 rsync -aHAX --numeric-ids "$TARGET/" "$WORK/mnt/"
 
 step "write fstab"
