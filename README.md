@@ -5,8 +5,8 @@ Nothing is built on a local machine: GitHub Actions builds, smoke-tests and publ
 
 ## Status
 
-`v0.0.2` - bootable base plus the macOS look: WhiteSur theme, Inter font, translucency,
-rounded corners, top bar and dock.
+`v0.0.3` - bootable base plus the macOS look: translucency, rounded corners, wallpaper,
+top bar, dock, WhiteSur icons and cursors, Inter font.
 
 ## Download
 
@@ -34,7 +34,7 @@ Change it after first boot with `passwd`.
 - Hyprland starts automatically on tty1 when a DRM device exists.
 - Top bar (Waybar) with workspaces, clock, tray, network, volume, battery.
 - Bottom dock (nwg-dock-hyprland), wallpaper, rounded corners, blur, shadows.
-- WhiteSur GTK theme, WhiteSur icons and cursors, Inter UI font, JetBrains Mono terminal font.
+- WhiteSur icons and cursors, Inter UI font, JetBrains Mono terminal font.
 - `Super+Return` terminal (kitty), `Super+Space` launcher (fuzzel), `Super+Q` close, `Super+Shift+Q` exit.
 - NetworkManager, PipeWire, Flatpak + Flathub wired up.
 - `pacman -S <pkg>` for anything else. `nwg-look` changes GTK theme from the GUI.
@@ -51,15 +51,15 @@ gh run watch
 Push a `v*` tag to publish the images to a GitHub Release:
 
 ```
-gh release create v0.0.2 --notes "..." --target main
+gh api -X POST repos/PanDuroDev/naseem-os/git/refs -f ref=refs/tags/v0.0.3 -f sha=$(gh api repos/PanDuroDev/naseem-os/commits/main --jq .sha)
 ```
 
 ## Roadmap
 
 - [x] bootable Arch + Hyprland image in CI
-- [x] WhiteSur GTK/icon theme, macOS cursors and fonts
-- [x] dock, wallpaper, translucent top bar
-- [ ] window traffic lights on hover, macOS window controls
+- [x] icons, cursors, fonts, dock, wallpaper, translucent top bar
+- [ ] WhiteSur GTK theme (its installer forces a full system upgrade; needs a prebuilt theme instead)
+- [ ] window traffic lights, macOS window controls
 - [ ] AUR helper, one-click app install menu
 - [ ] Omarchy package layer (install/update menu, defaults)
 - [ ] ISO output
