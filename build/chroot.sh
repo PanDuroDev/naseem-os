@@ -19,7 +19,7 @@ pacstrap -K "$TARGET" \
   pipewire pipewire-pulse wireplumber \
   polkit noto-fonts noto-fonts-emoji ttf-dejavu inter-font ttf-jetbrains-mono \
   ttf-nerd-fonts-symbols \
-  sassc libxml2 imagemagick flatpak libnotify \
+  sassc libxml2 imagemagick flatpak grim slurp wl-clipboard hyprlock zram-generator libnotify \
   firefox nautilus imv mpv mousepad
 
 step "configure target"
