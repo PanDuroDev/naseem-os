@@ -1,0 +1,51 @@
+/* Naseem - macOS style window controls for client side decorated apps */
+windowcontrols > button,
+windowcontrols button.titlebutton,
+headerbar button.titlebutton {
+    min-width: 13px;
+    min-height: 13px;
+    padding: 0;
+    margin: 0 4px;
+    border: none;
+    border-radius: 999px;
+    background-image: none;
+    box-shadow: none;
+    color: transparent;
+    text-shadow: none;
+}
+
+windowcontrols > button.close,
+windowcontrols button.titlebutton.close,
+headerbar button.titlebutton.close {
+    background-color: #ff5f57;
+}
+
+windowcontrols > button.minimize,
+windowcontrols button.titlebutton.minimize,
+headerbar button.titlebutton.minimize {
+    background-color: #febc2e;
+}
+
+windowcontrols > button.maximize,
+windowcontrols button.titlebutton.maximize,
+headerbar button.titlebutton.maximize {
+    background-color: #28c840;
+}
+
+windowcontrols > button:hover.close,
+windowcontrols button.titlebutton:hover.close,
+headerbar button.titlebutton:hover.close {
+    background-color: #ff8479;
+}
+
+windowcontrols > button:hover.minimize,
+windowcontrols button.titlebutton:hover.minimize,
+headerbar button.titlebutton:hover.minimize {
+    background-color: #ffd05c;
+}
+
+windowcontrols > button:hover.maximize,
+windowcontrols button.titlebutton:hover.maximize,
+headerbar button.titlebutton:hover.maximize {
+    background-color: #4be05c;
+}
