@@ -4,7 +4,11 @@ Super + Return        terminal
 Super + Space         search apps / run command
 Super + A             app grid
 Super + I             install an app
+Super + C             control centre
 Super + N             clear notifications
+Super + L             lock screen
+Super + Shift + S     screenshot a region
+Print                 screenshot the whole screen
 Super + /             this list
 Super + Q             close window
 Super + F             fullscreen
