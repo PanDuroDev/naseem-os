@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-# Curated app installer: fuzzel menu -> pacman / yay / flatpak.
+#!/bin/bash
+# Naseem OS - pick a program and install it, with desktop notifications.
 set -uo pipefail
 
 APPS='Firefox|pacman|firefox
@@ -18,32 +18,57 @@ Steam|pacman|steam
 Telegram|pacman|telegram-desktop
 Transmission|pacman|transmission-gtk
 File manager|pacman|nautilus
+Notes|pacman|mousepad
 Discord|flatpak|com.discordapp.Discord
 Spotify|flatpak|com.spotify.Client
 Signal|flatpak|org.signal.Signal
 Zoom|flatpak|us.zoom.Zoom
 Obsidian|flatpak|md.obsidian.Obsidian'
 
+# --check only validates the curated pacman entries, used by the image build.
 if [ "${1:-}" = "--check" ]; then
-  bad=0
-  while IFS='|' read -r name backend pkg; do
-    [ -z "$name" ] && continue
-    if [ "$backend" = pacman ] && ! pacman -Si "$pkg" >/dev/null 2>&1; then
-      echo "MISSING repo: $pkg"; bad=1
-    fi
-  done <<<"$APPS"
-  exit $bad
+    rc=0
+    while IFS='|' read -r _ backend pkg; do
+        [ -z "$backend" ] && continue
+        if [ "$backend" = pacman ] && ! pacman -Si "$pkg" >/dev/null 2>&1; then
+            echo "MISSING $pkg"
+            rc=1
+        fi
+    done <<< "$APPS"
+    exit $rc
 fi
 
-choice=$(printf '%s\n' "$APPS" | cut -d'|' -f1 | fuzzel --dmenu -p 'Install: ' -w 40) || exit 0
+# --run <backend> <pkg> <name> runs inside the terminal window opened below.
+if [ "${1:-}" = "--run" ]; then
+    backend=$2
+    pkg=$3
+    name=$4
+    case "$backend" in
+        pacman)  sudo pacman -S --needed "$pkg" ;;
+        aur)     yay -S --needed "$pkg" ;;
+        flatpak) flatpak install -y --noninteractive flathub "$pkg" ;;
+        *)       echo "unknown backend: $backend"; exit 1 ;;
+    esac
+    rc=$?
+    if [ $rc -eq 0 ]; then
+        notify-send -a Naseem "Installed $name" "Ready to launch from the app grid"
+        echo
+        echo "Done."
+    else
+        notify-send -a Naseem -u critical "Could not install $name" "See the terminal window"
+        echo
+        read -rp "Failed. Press Enter to close."
+    fi
+    exit $rc
+fi
+
+choice=$(printf '%s\n' "$APPS" | cut -d'|' -f1 | fuzzel --dmenu -p 'Install: ' -w 40)
 [ -z "$choice" ] && exit 0
-line=$(printf '%s\n' "$APPS" | awk -F'|' -v n="$choice" '$1==n')
-backend=$(printf '%s' "$line" | cut -d'|' -f2)
-pkg=$(printf '%s' "$line" | cut -d'|' -f3)
-case "$backend" in
-  pacman)  cmd="sudo pacman -S --needed --noconfirm $pkg" ;;
-  yay)     cmd="yay -S --needed --noconfirm $pkg" ;;
-  flatpak) cmd="flatpak install -y --noninteractive flathub $pkg" ;;
-  *) echo "unknown backend: $backend"; exit 1 ;;
-esac
-exec foot --title="Install: $choice" bash -c "$cmd; echo; read -rp 'Done. Press Enter to close.'"
+
+line=$(printf '%s\n' "$APPS" | awk -F'|' -v n="$choice" '$1 == n { print; exit }')
+[ -z "$line" ] && exit 1
+backend=$(echo "$line" | cut -d'|' -f2)
+pkg=$(echo "$line" | cut -d'|' -f3)
+
+notify-send -a Naseem "Installing $choice" "Follow the progress in the terminal window"
+exec foot --title="Install: $choice" "$0" --run "$backend" "$pkg" "$choice"
