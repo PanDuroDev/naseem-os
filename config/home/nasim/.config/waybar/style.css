@@ -1,44 +1,108 @@
 * {
-  font-family: "Inter", "Noto Sans", sans-serif;
+  font-family: "Inter", "Symbols Nerd Font Mono", sans-serif;
   font-size: 13px;
+  font-weight: 500;
   min-height: 0;
+  border: none;
+  border-radius: 0;
 }
 
 window#waybar {
-  background: rgba(28, 28, 30, 0.72);
-  color: #f2f2f7;
+  background: linear-gradient(180deg, rgba(38, 38, 44, 0.72) 0%, rgba(20, 20, 24, 0.66) 100%);
+  color: rgba(255, 255, 255, 0.88);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-#workspaces button {
-  padding: 0 9px;
-  margin: 4px 2px;
-  border-radius: 6px;
-  color: #c7c7cc;
-  background: transparent;
+tooltip {
+  background: rgba(32, 32, 36, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 6px 10px;
 }
 
-#workspaces button.active {
-  background: rgba(255, 255, 255, 0.18);
+tooltip label {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 12px;
+}
+
+#custom-menubar {
+  padding: 0 12px 0 14px;
+  font-size: 15px;
   color: #ffffff;
 }
 
+#workspaces {
+  padding: 0 2px;
+}
+
+#workspaces button {
+  padding: 0 5px;
+  margin: 0;
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.28);
+  background: transparent;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+#workspaces button.active {
+  color: #ffffff;
+}
+
+#workspaces button:hover {
+  color: rgba(255, 255, 255, 0.8);
+  background: transparent;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+#window {
+  padding-left: 10px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12.5px;
+}
+
 #clock {
-  font-weight: 600;
+  color: #ffffff;
+  padding: 0 6px;
+  font-size: 13px;
 }
 
 #tray,
 #network,
 #pulseaudio,
+#battery,
+#custom-notification {
+  padding: 0 9px;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 13px;
+}
+
+#custom-notification {
+  padding-left: 4px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+#tray {
+  padding-right: 2px;
+}
+
 #battery {
-  padding: 0 10px;
-  color: #e5e5ea;
+  padding-right: 14px;
 }
 
 #battery.warning {
-  color: #ffd60a;
+  color: #ff9f0a;
 }
 
 #battery.critical {
   color: #ff453a;
+}
+
+#network.disconnected {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+#pulseaudio.muted {
+  color: rgba(255, 255, 255, 0.42);
 }
