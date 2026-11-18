@@ -52,8 +52,9 @@ printf '\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n' >> /etc/pacman.conf
 pacman -Sy --noconfirm >/dev/null 2>&1 || echo 'WARN: multilib sync failed'
 
 step "app installer"
-chmod 755 /usr/local/bin/naseem-install
+chmod 755 /usr/local/bin/naseem-install /usr/local/bin/naseem-volume
 bash -n /usr/local/bin/naseem-install || echo 'WARN: naseem-install syntax error'
+bash -n /usr/local/bin/naseem-volume || echo 'WARN: naseem-volume syntax error'
 /usr/local/bin/naseem-install --check || echo 'WARN: some curated packages missing from the repos'
 
 step "macOS icons and cursors"
