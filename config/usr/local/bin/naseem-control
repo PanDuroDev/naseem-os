@@ -1,0 +1,74 @@
+#!/bin/bash
+# Naseem control menu - a small macOS-like command centre built on fuzzel
+set -uo pipefail
+
+toggle_wifi() {
+    nmcli radio wifi
+    if nmcli radio wifi | grep -q enabled; then
+        nmcli radio wifi off
+    else
+        nmcli radio wifi on
+    fi
+}
+
+toggle_dnd() {
+    if makoctl mode | grep -q do-not-disturb; then
+        makoctl mode -r do-not-disturb
+    else
+        makoctl mode -t do-not-disturb
+    fi
+}
+
+choice=$(printf '%s\n' \
+    "Wi-Fi: on or off" \
+    "Network settings" \
+    "Do not disturb: on or off" \
+    "Screenshot: region" \
+    "Screenshot: full screen" \
+    "Lock screen" \
+    "Install an app" \
+    "Keybinds" \
+    "Log out" \
+    "Reboot" \
+    "Shut down" | fuzzel --dmenu -p 'Control: ' -w 34) || exit 0
+[ -n "$choice" ] || exit 0
+
+case "$choice" in
+    "Wi-Fi: on or off")
+        toggle_wifi
+        notify-send "Wi-Fi" "$(nmcli radio wifi)"
+        ;;
+    "Network settings")
+        exec foot --title=Network nmtui
+        ;;
+    "Do not disturb: on or off")
+        toggle_dnd
+        notify-send "Do not disturb" "$(makoctl mode | tr -d '\n')"
+        ;;
+    "Screenshot: region")
+        exec naseem-shot
+        ;;
+    "Screenshot: full screen")
+        exec naseem-shot full
+        ;;
+    "Lock screen")
+        exec hyprlock
+        ;;
+    "Install an app")
+        exec naseem-install
+        ;;
+    "Keybinds")
+        exec foot --title=Keybinds less /home/nasim/.config/naseem/keybinds.txt
+        ;;
+    "Log out")
+        hyprctl dispatch 'exit()'
+        ;;
+    "Reboot")
+        notify-send "Rebooting"
+        systemctl reboot
+        ;;
+    "Shut down")
+        notify-send "Shutting down"
+        systemctl poweroff
+        ;;
+esac
