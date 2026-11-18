@@ -1,39 +1,72 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 28,
-  "spacing": 4,
-  "modules-left": ["hyprland/workspaces"],
+  "height": 26,
+  "spacing": 0,
+  "modules-left": ["custom/menubar", "hyprland/workspaces", "hyprland/window"],
   "modules-center": ["clock"],
-  "modules-right": ["tray", "network", "pulseaudio", "battery"],
+  "modules-right": ["custom/notification", "tray", "network", "pulseaudio", "battery"],
+  "custom/menubar": {
+    "format": "\uf06c",
+    "tooltip": false,
+    "on-click": "nwg-drawer -wm hyprland -c 6 -is 56 -mt 60 -mb 60 -ml 60 -mr 60"
+  },
   "hyprland/workspaces": {
-    "format": "{id}",
+    "format": "{icon}",
+    "format-icons": {
+      "active": "\uf111",
+      "default": "\uf10c",
+      "empty": "\uf10c",
+      "persistent": "\uf10c"
+    },
     "persistent-workspaces": {
       "*": 5
     }
   },
+  "hyprland/window": {
+    "format": "{title}",
+    "max-length": 64,
+    "separate-outputs": true
+  },
   "clock": {
-    "format": "{:%a %d %b   %H:%M}",
-    "tooltip-format": "{:%B %Y}"
+    "format": "{:%a %d %b  %H:%M}",
+    "tooltip-format": "<tt>{calendar}</tt>"
+  },
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon}",
+    "format-icons": {
+      "on": "\uf0f3",
+      "dnd": "\uf1f6"
+    },
+    "exec": "makoctl mode | grep -q do-not-disturb && echo dnd || echo on",
+    "interval": 3,
+    "on-click": "makoctl mode -t do-not-disturb",
+    "on-click-right": "makoctl dismiss --all"
+  },
+  "tray": {
+    "icon-size": 15,
+    "spacing": 6
   },
   "network": {
-    "format-wifi": "Wi-Fi",
-    "format-ethernet": "Ethernet",
-    "format-disconnected": "Offline"
+    "format-wifi": "\uf1eb",
+    "format-ethernet": "\uf0ac",
+    "format-disconnected": "\uf127",
+    "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+    "tooltip-format-ethernet": "{ifname}"
   },
   "pulseaudio": {
-    "format": "Vol {volume}%",
-    "format-muted": "Muted"
+    "format": "\uf028  {volume}%",
+    "format-muted": "\uf026",
+    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
   },
   "battery": {
-    "format": "{capacity}%",
+    "format": "{icon}  {capacity}%",
+    "format-charging": "\uf0e7  {capacity}%",
+    "format-icons": ["\uf244", "\uf243", "\uf242", "\uf241", "\uf240"],
     "states": {
       "warning": 20,
       "critical": 10
     }
-  },
-  "tray": {
-    "icon-size": 16,
-    "spacing": 8
   }
 }
