@@ -47,7 +47,9 @@ step "desktop dotfiles"
 cp -a /config/. /
 chown -R nasim:nasim /home/nasim
 
-step "mirrors"
+step "home cache dirs"
+install -d -o nasim -g nasim /home/nasim/.cache /home/nasim/.local/share /home/nasim/.local/state
+install -d -o nasim -g nasim /home/nasim/.cache/fontconfig /home/nasim/.cache/mesa_shader_cachestep "mirrors"
 cat > /etc/pacman.d/mirrorlist <<'EOF'
 Server = https://geo.mirror.pkgbuild.com/$repo/os/$arch
 Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch
