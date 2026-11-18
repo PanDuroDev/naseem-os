@@ -4,6 +4,7 @@ Super + Return        terminal
 Super + Space         search apps / run command
 Super + A             app grid
 Super + I             install an app
+Super + N             clear notifications
 Super + /             this list
 Super + Q             close window
 Super + F             fullscreen
