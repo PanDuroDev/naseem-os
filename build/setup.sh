@@ -47,15 +47,40 @@ step "desktop dotfiles"
 cp -a /config/. /
 chown -R nasim:nasim /home/nasim
 
+step "mirrors"
+cat > /etc/pacman.d/mirrorlist <<'EOF'
+Server = https://geo.mirror.pkgbuild.com/$repo/os/$arch
+Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch
+Server = https://mirror.rackspace.com/archlinux/$repo/os/$arch
+Server = https://mirrors.ocf.berkeley.edu/archlinux/$repo/os/$arch
+EOF
+pacman -Syy --noconfirm >/dev/null 2>&1 || echo 'WARN: mirror sync failed'
+
 step "multilib"
 printf '\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n' >> /etc/pacman.conf
 pacman -Sy --noconfirm >/dev/null 2>&1 || echo 'WARN: multilib sync failed'
 
 step "app installer"
-chmod 755 /usr/local/bin/naseem-install /usr/local/bin/naseem-volume
-bash -n /usr/local/bin/naseem-install || echo 'WARN: naseem-install syntax error'
-bash -n /usr/local/bin/naseem-volume || echo 'WARN: naseem-volume syntax error'
+chmod 755 /usr/local/bin/naseem-install /usr/local/bin/naseem-volume /usr/local/bin/naseem-shot /usr/local/bin/naseem-control
+for s in naseem-install naseem-volume naseem-shot naseem-control; do
+  bash -n "/usr/local/bin/$s" || echo "WARN: $s syntax error"
+done
 /usr/local/bin/naseem-install --check || echo 'WARN: some curated packages missing from the repos'
+
+step "swap on zram"
+cat > /etc/systemd/zram-generator.conf <<'EOF'
+[zram0]
+zram-size = min(ram / 2, 4096)
+compression-algorithm = zstd
+EOF
+
+step "lock screen"
+cat > /etc/pam.d/hyprlock <<'EOF'
+auth      include system-login
+account   include system-login
+password  include system-login
+session   include system-login
+EOF
 
 step "macOS icons and cursors"
 sudo -u nasim env HOME=/home/nasim git clone --depth 1 https://github.com/vinceliuice/WhiteSur-icon-theme /tmp/ws-icon
