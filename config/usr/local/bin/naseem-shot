@@ -1,0 +1,23 @@
+#!/bin/bash
+# take a screenshot: region (default) or full, save it and copy to clipboard
+set -uo pipefail
+
+mode=${1:-region}
+dir=/home/nasim/Pictures
+mkdir -p "$dir"
+file="$dir/shot-$(date +%Y%m%d-%H%M%S).png"
+
+if [ "$mode" = "full" ]; then
+    grim "$file"
+else
+    geom=$(slurp) || exit 0
+    grim -g "$geom" "$file"
+fi
+
+if [ -s "$file" ]; then
+    wl-copy <"$file"
+    notify-send -i "$file" "Screenshot copied" "$(basename "$file")"
+else
+    notify-send -u critical "Screenshot failed"
+    exit 1
+fi
