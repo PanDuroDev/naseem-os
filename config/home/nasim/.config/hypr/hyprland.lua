@@ -39,7 +39,6 @@ hl.config({
         disable_hyprland_logo = true,
         force_default_wallpaper = 0,
         focus_on_activate = true,
-        vfr = true,
     },
 })
 
@@ -78,7 +77,7 @@ local mod = "SUPER"
 hl.bind(mod .. " + RETURN", hl.dsp.exec_cmd("foot"))
 hl.bind(mod .. " + SPACE",  hl.dsp.exec_cmd("fuzzel"))
 hl.bind(mod .. " + Q",      hl.dsp.window.close())
-hl.bind(mod .. " + A",      hl.dsp.exec_cmd("nwg-drawer -wm hyprland -c 6 -is 56 -mt 60 -mb 60 -ml 60 -mr 60"))
+hl.bind(mod .. " + A",      hl.dsp.exec_cmd("nwg-drawer -wm hyprland -c 6 -nocats -is 56 -mt 60 -mb 60 -ml 60 -mr 60"))
 hl.bind(mod .. " + I",      hl.dsp.exec_cmd("naseem-install"))
 hl.bind(mod .. " + C",      hl.dsp.exec_cmd("naseem-control"))
 hl.bind(mod .. " + N",      hl.dsp.exec_cmd("makoctl dismiss --all"))
