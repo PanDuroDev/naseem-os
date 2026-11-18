@@ -5,9 +5,9 @@ Nothing is built on a local machine: GitHub Actions builds, smoke-tests and publ
 
 ## Status
 
-`v0.0.7` - bootable base plus the macOS look (translucency, rounded corners, wallpaper,
-top bar, dock, app grid, WhiteSur icons and cursors, Inter font), `yay` for AUR packages,
-multilib, and a built-in app installer menu on `Super+I`.
+`v0.0.8` - bootable base, macOS look (translucency, blur, rounded corners, wallpaper, menu bar,
+dock, app grid, WhiteSur icons and cursors, Inter font), a working notification centre,
+preinstalled apps, `yay` for AUR packages, multilib, and a one-click app installer on `Super+I`.
 
 ## Download
 
@@ -36,15 +36,17 @@ Needs 4 GB RAM, 2 CPU cores and about 16 GB of disk.
 
 Login is automatic and Hyprland starts by itself. Change the password with `passwd`.
 
-## Installing software
+## What is installed
 
-Three ways, in order of ease:
+- Browser: Firefox
+- Files: Nautilus
+- Terminal: foot
+- Text editor: mousepad
+- Images / video: imv / mpv
+- Settings: `nwg-look` (GTK theme and icons)
 
-1. `Super+I` - menu of popular apps (Firefox, VLC, GIMP, LibreOffice, Steam, Discord,
-   Spotify, ...). Pick one, it installs in a terminal window and shows progress.
-2. Terminal: `sudo pacman -S <pkg>` for official packages, `yay -S <pkg>` for the AUR,
-   `flatpak install flathub <id>` for Flathub apps.
-3. `nwg-look` changes the GTK theme from a GUI.
+Anything else comes from `Super+I` or a terminal:
+`sudo pacman -S <pkg>`, `yay -S <pkg>` (AUR), `flatpak install flathub <id>`.
 
 ## Keybinds
 
@@ -52,27 +54,24 @@ Press `Super+/` inside the VM for the full list. The essentials:
 
 | Keys | Action |
 |------|--------|
-| `Super+Return` | terminal (foot) |
-| `Super+Space` | search apps / run a command (fuzzel) |
+| `Super+Return` | terminal |
+| `Super+Space` | search apps / run a command |
 | `Super+A` | app grid / Launchpad |
 | `Super+I` | install an app |
+| `Super+N` | clear notifications |
 | `Super+Q` | close window |
 | `Super+F` | fullscreen |
 | `Super+1..5` | switch workspace |
 | `Super+Shift+1..5` | move window to workspace |
 | `Super+Shift+E` | exit Hyprland back to a text console |
 
-## What works
+The top menu bar behaves like macOS: the leaf on the left opens the app grid, the dots
+switch workspaces, the bell toggles Do Not Disturb (right click clears notifications).
 
-- Hyprland starts automatically on tty1 through `start-hyprland` when a DRM device exists.
-- Top bar (Waybar) with workspaces, clock, tray, network, volume, battery.
-- Bottom dock (nwg-dock-hyprland), wallpaper, rounded corners, blur, shadows.
-- App grid / Launchpad (nwg-drawer) on `Super+A`, app installer on `Super+I`.
-- WhiteSur icons and macOS cursors, Inter UI font, JetBrains Mono terminal font.
-- NetworkManager, PipeWire, Flatpak + Flathub, multilib repo enabled.
-- `pacman`, `yay`, `flatpak` all ready; `nwg-look` for GTK theme settings.
-- `sshd` runs, so the VM can be reached with `ssh -p 2222 nasim@127.0.0.1` after a
-  port forward.
+## Notifications
+
+`mako` runs as the notification daemon: app notifications, install progress messages and
+volume changes all appear top right. `Super+N` dismisses them all.
 
 ## Configuration
 
@@ -83,6 +82,9 @@ Hyprland 0.57 dropped the old ini file. Check edits before restarting the sessio
 Hyprland --verify-config
 ```
 
+Other config locations: `~/.config/waybar/`, `~/.config/mako/config`,
+`~/.config/nwg-dock-hyprland/style.css`, `~/.config/foot/foot.ini`.
+
 ## Troubleshooting
 
 - **Black screen after boot, or Hyprland refuses to start** - the virtual GPU cannot do
@@ -90,6 +92,8 @@ Hyprland --verify-config
   `WLR_RENDERER=pixman Hyprland`. On VirtualBox, enable Display -> Enable 3D Acceleration.
 - **VirtualBox stays on a black screen** - you attached the `.vmdk`. Use `naseem.vdi`.
 - **No network** - `nmtui`.
+- **No notifications** - check that `mako` is running: `pgrep mako`, otherwise start it
+  with `mako &`.
 - **Forgot the keybinds** - `Super+/`, or read `~/.config/naseem/keybinds.txt`.
 
 ## Build
@@ -104,17 +108,19 @@ gh run watch
 Push a `v*` tag to publish the images to a GitHub Release:
 
 ```
-gh api -X POST repos/PanDuroDev/naseem-os/git/refs -f ref=refs/tags/v0.0.7 -f sha=$(gh api repos/PanDuroDev/naseem-os/commits/main --jq .sha)
+gh api -X POST repos/PanDuroDev/naseem-os/git/refs -f ref=tags/v0.0.8 -f sha=$(gh api repos/PanDuroDev/naseem-os/commits/main --jq .sha)
 ```
 
 ## Roadmap
 
 - [x] bootable Arch + Hyprland image in CI
-- [x] icons, cursors, fonts, dock, wallpaper, translucent top bar, app grid
+- [x] icons, cursors, fonts, dock, wallpaper, translucent menu bar, app grid
 - [x] AUR helper (`yay`), multilib
-- [x] one-click app install menu (`Super+I`)
-- [x] keybind cheatsheet (`Super+/`)
+- [x] one-click app install menu (`Super+I`) with notifications
+- [x] notification daemon (`mako`), volume feedback notifications
+- [x] preinstalled browser, file manager, editor, image and video viewer
 - [ ] window traffic lights, macOS window controls
 - [ ] WhiteSur GTK theme (its installer forces a full system upgrade; needs a prebuilt theme)
+- [ ] control centre panel (volume, brightness, wifi, bluetooth)
 - [ ] Omarchy package layer (install/update menu, defaults)
 - [ ] ISO output
